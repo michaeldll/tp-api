@@ -1,0 +1,405 @@
+swagger: "2.0"
+info:
+  description: "API template"
+  version: "0.0.0"
+  title: "API template"
+host: "localhost:3000"
+basePath: "/api/v1"
+produces:
+  - "application/json"
+securityDefinitions:
+  authorization:
+    type: apiKey
+    name: authorization
+    in: header
+paths:
+  /bookings:
+    get:
+      security:
+        - authorization: []
+      tags:
+        - bookings
+      summary: Send a list of bookings
+      parameters:
+        - in: query
+          name: id
+          type: integer
+          description: The booking's id
+        - in: query
+          name: username
+          type: string
+          description: The user's username's booking
+        - in: query
+          name: flight_ref
+          type: string
+          description: The flight's reference booked
+      responses:
+        200:
+          description: List of filtered bookings according to the restrictions given via querystring
+          schema:
+            type: array
+            items:
+              $ref: "#/definitions/Booking"
+        404:
+          description: No bookings corresponding
+    post:
+      security:
+        - authorization: []
+      tags:
+        - bookings
+      summary: Create a new booking
+      parameters:
+        - in: body
+          name: booking
+          type: object
+          description: The booking's data to create
+          properties:
+            username:
+              type: string
+            flight_ref:
+              type: string
+      responses:
+        201:
+          description: The booking created
+          schema:
+            $ref: "#/definitions/Booking"
+        400:
+          description: Bad request.
+          schema:
+            $ref: "#/definitions/Error"
+        409:
+          description: This booking's already created.
+          schema:
+            $ref: "#/definitions/Error"
+  /booking/{id}:
+    put:
+      security:
+        - authorization: []
+      tags:
+        - bookings
+      summary: Update a booking
+      parameters:
+        - in: path
+          name: id
+          type: integer
+          description: The booking's id to update
+        - in: body
+          name: booking
+          type: object
+          description: The booking's data to update
+          properties:
+            username:
+              type: string
+            flight_ref:
+              type: string
+      responses:
+        200:
+          description: The booking updated
+          schema:
+            $ref: "#/definitions/Booking"
+        400:
+          description: Bad request
+        404:
+          description: No booking corresponding to this id.
+    delete:
+      security:
+        - authorization: []
+      tags:
+        - bookings
+      summary: Delete a booking
+      parameters:
+        - in: path
+          name: id
+          type: integer
+          description: The booking's id to delete
+      responses:
+        200:
+          description: The booking was deleted successfully
+        404:
+          description: No booking corresponding to this id.
+  /users:
+    get:
+      security:
+        - authorization: []
+      tags:
+        - users
+      summary: Send a list of users
+      parameters:
+        - name: country
+          type: string
+          in: query
+          description: Country of the users
+        - name: company
+          type: string
+          in: query
+          description: Company of the users
+      responses:
+        200:
+          description: List of filtered users according to the restrictions given via querystring
+          schema:
+            type: array
+            items:
+              $ref: "#/definitions/User"
+        404:
+          description: No users found
+    post:
+      summary: Create a user
+      tags:
+        - users
+      parameters:
+        - name: body
+          in: body
+          schema:
+            $ref: "#/definitions/User"
+          description: User to create
+      responses:
+        201:
+          description: The user created
+          schema:
+            type: object
+            schema:
+              $ref: "#/definitions/User"
+        400:
+          description: Bad request
+        409:
+          description: User already exists
+  /users/{username}:
+    get:
+      security:
+        - authorization: []
+      tags:
+        - users
+      summary: Get a user by its username
+      parameters:
+        - in: path
+          name: username
+          type: string
+          description: The user's username to return
+          required: true
+      responses:
+        200:
+          description: The user found
+          schema:
+            $ref: "#/definitions/User"
+        404:
+          description: This user was not found
+    put:
+      security:
+        - authorization: []
+      tags:
+        - users
+      summary: Update a user by its username
+      parameters:
+        - in: path
+          name: username
+          type: string
+          description: The user's username to update
+          required: true
+        - in: body
+          name: user
+          type: object
+          description: The user's data to update
+          properties:
+            country:
+              type: string
+      responses:
+        200:
+          description: The user updated
+          schema:
+            $ref: "#/definitions/User"
+        400:
+          description: Bad request
+        404:
+          description: No user found with given username
+    delete:
+      security:
+        - authorization: []
+      tags:
+        - users
+      summary: Update a user by its username
+      parameters:
+          - in: path
+            name: username
+            type: string
+            description: The user's username to update
+            required: true
+      responses:
+        200:
+          description: The user was deleted successfully.
+        404:
+          description: No user found for given username
+  /flights:
+    get:
+      tags:
+        - flights
+      summary: Returns a list of flights
+      parameters:
+        - name: origin
+          type: string
+          in: query
+          description: Code of the airport where the flight take off
+        - name: destination
+          type: string
+          in: query
+          description: Code of the airport where the flight will land
+      responses:
+        200:
+          description: List of filtered flights according to the restrictions given via querystring
+          schema:
+            type: array
+            items:
+              $ref: "#/definitions/Flight"
+        404:
+          description: No flights found
+    post:
+      security:
+        - authorization: []
+      tags:
+        - flights
+      summary: Creates a flights
+      parameters:
+        - name: body
+          in: body
+          schema:
+            $ref: "#/definitions/Flight"
+          description: Code of the airport where the flight take off
+      responses:
+        201:
+          description: Created flight
+          schema:
+            type: object
+            schema:
+              $ref: "#/definitions/Flight"
+        400:
+          description: Bad request
+        409:
+          description: Flight already exists
+  /flights/{reference}:
+    get:
+      tags:
+        - flights
+      summary: Return a flight by its reference
+      parameters:
+        - in: path
+          name: reference
+          required: true
+          type: string
+          description: Flight's reference to search for
+      responses:
+        200:
+          description: The flight according to the reference
+          schema:
+            $ref: "#/definitions/Flight"
+        404:
+          description: No flight found for given reference
+    put:
+      security:
+        - authorization: []
+      summary: Update a flight by its reference
+      tags:
+        - flights
+      parameters:
+        - in: path
+          name: reference
+          required: true
+          type: string
+          description: Flight's reference to update
+        - in: body
+          name: flight
+          type: object
+          description: The flight's data to update
+      responses:
+        200:
+          description: The flight updated
+          schema:
+            $ref: "#/definitions/Flight"
+        400:
+          description: Bad request
+        404:
+          description: No flight found for given reference
+    delete:
+      security:
+        - authorization: []
+      summary: Delete a flight by its reference
+      tags:
+        - flights
+      parameters:
+        - in: path
+          name: reference
+          required: true
+          description: Flight's reference to delete
+      responses:
+        200:
+          description: The flight was deleted successfully.
+        404:
+          description: No flight found for given reference
+definitions:
+  Booking:
+    type: object
+    properties:
+      id: integer
+      username: string
+      flight_ref: string
+    example:
+      username: "@devonbl"
+      flight_ref: 'AF-123'
+  User:
+    type: object
+    properties:
+      username:
+        type: string
+      fullname:
+        type: string
+      country:
+        type: string
+      avatar:
+        type: string
+      company:
+        type: string
+      type:
+        type: string
+    example:
+      username: "@devonbl"
+      fullname: "Devon Lindsey"
+      country: "USA"
+      avatar: "https://pbs.twimg.com/profile_images/602288777319460866/QEZUObls_bigger.jpg"
+      company: "Apple"
+      type: "person"
+  Flight:
+    type: object
+    properties:
+      reference:
+        type: string
+        description: Identifier of the flight
+      origin:
+        type: string
+        description: Where the flight will take off
+      destination:
+        type: string
+        description: Where the flight will land
+      placesLeft:
+        type: number
+        description: Available seats on the plane
+      company:
+        type: string
+        description: Name of the company
+      price:
+        type: number
+      date:
+        type: string
+        format: date
+    example:
+      reference: 'AF-123'
+      origin: 'CDG'
+      destination: 'BOG'
+      date: '2018-03-06T10:32:31.175Z'
+      placesLeft: 30
+      price: 200
+      company: 'Air France'
+  Error:
+    type: object
+    properties:
+      message:
+        type: string
+    example:
+      message: Description error

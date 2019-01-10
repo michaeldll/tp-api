@@ -1,0 +1,20 @@
+{
+  "all": true,
+  "reporter": [
+    "lcov",
+    "text",
+    "text-summary"
+  ],
+  "report-dir": "./coverage",
+  "include": [
+    "src/**/*.js"
+  ],
+  "exclude": [
+    "bin/",
+    "public/",
+    "test/",
+    "views/"
+  ],
+  "cache": true
+}
+
