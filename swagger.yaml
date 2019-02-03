@@ -37,11 +37,11 @@ paths:
         - editors
       parameters:
         - in: body
-          name: Genre
+          name: Editor
           required: true
           description: The new editor.
           schema:
-            $ref: "#/definitions/Genre"
+            $ref: "#/definitions/Editor"
       responses:
         '200':
           description: The new editor.
@@ -55,11 +55,11 @@ paths:
         - editors
       parameters:
         - in: body
-          name: Genre
+          name: Editor
           required: true
           description: The new editor data.
           schema:
-            $ref: "#/definitions/Genre"
+            $ref: "#/definitions/Editor"
       responses:
         '200':
           description: The editor updated.
@@ -139,11 +139,11 @@ paths:
         - events
       parameters:
         - in: body
-          name: Genre
+          name: Event
           required: true
           description: The new event.
           schema:
-            $ref: "#/definitions/Genre"
+            $ref: "#/definitions/Event"
       responses:
         '200':
           description: The new event.
@@ -157,11 +157,11 @@ paths:
         - events
       parameters:
         - in: body
-          name: Genre
+          name: Event
           required: true
           description: The new event data.
           schema:
-            $ref: "#/definitions/Genre"
+            $ref: "#/definitions/Event"
       responses:
         '200':
           description: The event updated.
@@ -253,11 +253,11 @@ paths:
         - awards
       parameters:
         - in: body
-          name: Genre
+          name: Award
           required: true
           description: The new award.
           schema:
-            $ref: "#/definitions/Genre"
+            $ref: "#/definitions/Award"
       responses:
         '200':
           description: The new award.
@@ -271,11 +271,11 @@ paths:
         - awards
       parameters:
         - in: body
-          name: Genre
+          name: Award
           required: true
           description: The new award data.
           schema:
-            $ref: "#/definitions/Genre"
+            $ref: "#/definitions/Award"
       responses:
         '200':
           description: The award updated.
@@ -355,11 +355,11 @@ paths:
         - authors
       parameters:
         - in: body
-          name: Genre
+          name: Author
           required: true
           description: The new author.
           schema:
-            $ref: "#/definitions/Genre"
+            $ref: "#/definitions/Author"
       responses:
         '200':
           description: The new author.
@@ -373,11 +373,11 @@ paths:
         - authors
       parameters:
         - in: body
-          name: Genre
+          name: Author
           required: true
           description: The new author data.
           schema:
-            $ref: "#/definitions/Genre"
+            $ref: "#/definitions/Author"
       responses:
         '200':
           description: The author updated.
