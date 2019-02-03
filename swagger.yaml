@@ -13,10 +13,10 @@ securityDefinitions:
     name: authorization
     in: header
 paths:
-  /editors/{editorRef}:
+  /editors/{editorId}:
     parameters:
       - in: path
-        name: editorRef
+        name: editorId
         schema:
           type: integer
           example: 1
@@ -115,10 +115,10 @@ paths:
           description: The list of editors.
         '404':
           description: No editors found.
-  /events/{eventRef}:
+  /events/{eventId}:
     parameters:
       - in: path
-        name: eventRef
+        name: eventId
         schema:
           type: integer
           example: 1
@@ -229,10 +229,10 @@ paths:
           description: The list of events.
         '404':
           description: No events found.
-  /awards/{awardRef}:
+  /awards/{awardId}:
     parameters:
       - in: path
-        name: awardRef
+        name: awardId
         schema:
           type: integer
           example: 1
@@ -331,10 +331,10 @@ paths:
           description: The list of awards.
         '404':
           description: No awards found.
-  /authors/{authorRef}:
+  /authors/{authorId}:
     parameters:
       - in: path
-        name: authorRef
+        name: authorId
         schema:
           type: integer
           example: 1
@@ -452,10 +452,10 @@ paths:
           description: Authors data found
         '404':
           description: Authors not found
-  /genres/{genreRef}:
+  /genres/{genreId}:
     parameters:
       - in: path
-        name: genreRef
+        name: genreId
         schema:
           type: integer
           example: 1
