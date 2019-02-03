@@ -11,7 +11,7 @@ const database = require('./src/database');
 
 // TODO: require here your routes files
 const usersRouter = require('./src/api/v1/users');
-const flightsRouter = require('./src/api/v1/flights');
+//const flightsRouter = require('./src/api/v1/flights');
 
 const createServer = () => {
 	const app = express();
@@ -36,7 +36,7 @@ const createServer = () => {
 
 	// TODO: define here your endpoints and attach them to the routes
 	app.use('/api/v1/users', usersRouter);
-	app.use('/api/v1/flights', flightsRouter);
+	//app.use('/api/v1/flights', flightsRouter);
 
 	const spec = fs.readFileSync(path.resolve(__dirname, 'swagger.yaml'), 'utf8');
 	const swaggerDoc = jsyaml.safeLoad(spec);
