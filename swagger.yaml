@@ -1,8 +1,8 @@
 swagger: "2.0"
 info:
-  description: "API template"
-  version: "0.0.0"
-  title: "API template"
+  description: "Librairie"
+  version: "0.0.1"
+  title: "Site vitrine Librairie"
 host: "localhost:3000"
 basePath: "/api/v1"
 produces:
@@ -13,6 +13,547 @@ securityDefinitions:
     name: authorization
     in: header
 paths:
+  /editors/{editorRef}:
+    parameters:
+      - in: path
+        name: editorRef
+        schema:
+          type: integer
+          example: 1
+        description: The id of the editor to return.
+        required: true
+    get:
+      summary: Returns a editor.
+      tags:
+        - editors
+      responses:
+        '200':
+          description: The editor.
+        '404':
+          $ref: '#components/responses/NotFound'
+    put:
+      summary: Replaces a editor.
+      tags:
+        - editors
+      parameters:
+        - in: body
+          name: Genre
+          required: true
+          description: The new editor.
+          schema:
+            $ref: "#/definitions/Genre"
+      responses:
+        '200':
+          description: The new editor.
+        '400':
+          $ref: '#components/responses/BadRequest'
+        '404':
+          $ref: '#components/responses/NotFound'
+    patch:
+      summary: Updates a editor.
+      tags:
+        - editors
+      parameters:
+        - in: body
+          name: Genre
+          required: true
+          description: The new editor data.
+          schema:
+            $ref: "#/definitions/Genre"
+      responses:
+        '200':
+          description: The editor updated.
+        '404':
+          $ref: '#components/responses/NotFound'
+    delete:
+      summary: Deletes a editor.
+      tags:
+        - editors
+      responses:
+        '200':
+          description: Deleted.
+        '404':
+          $ref: '#components/responses/NotFound'
+  /editors:
+    post:
+      summary: Adds a new editor.
+      tags:
+        - editors
+      parameters:
+        - name: Editor
+          in: body
+          required: true
+          description: The new editor.
+          schema:
+            $ref: "#/definitions/Editor"
+      responses:
+        '201':
+          description: Editor created.
+        '400':
+          $ref: '#components/responses/BadRequest'
+        '409':
+          $ref: '#components/responses/Conflict'
+    get:
+      summary: Returns a list of editors.
+      tags:
+        - editors
+      parameters:
+        - in: query
+          name: id
+          schema:
+            type: integer
+            example: 1
+          description: The editor id.
+        - in: query
+          name: name
+          schema:
+            type: string
+            example: "Poches éditions"
+          description: The editor name.
+      responses:
+        '200':
+          description: The list of editors.
+        '404':
+          description: No editors found.
+  /events/{eventRef}:
+    parameters:
+      - in: path
+        name: eventRef
+        schema:
+          type: integer
+          example: 1
+        description: The id of the event to return.
+        required: true
+    get:
+      summary: Returns a event.
+      tags:
+        - events
+      responses:
+        '200':
+          description: The event.
+        '404':
+          $ref: '#components/responses/NotFound'
+    put:
+      summary: Replaces a event.
+      tags:
+        - events
+      parameters:
+        - in: body
+          name: Genre
+          required: true
+          description: The new event.
+          schema:
+            $ref: "#/definitions/Genre"
+      responses:
+        '200':
+          description: The new event.
+        '400':
+          $ref: '#components/responses/BadRequest'
+        '404':
+          $ref: '#components/responses/NotFound'
+    patch:
+      summary: Updates a event.
+      tags:
+        - events
+      parameters:
+        - in: body
+          name: Genre
+          required: true
+          description: The new event data.
+          schema:
+            $ref: "#/definitions/Genre"
+      responses:
+        '200':
+          description: The event updated.
+        '404':
+          $ref: '#components/responses/NotFound'
+    delete:
+      summary: Deletes a event.
+      tags:
+        - events
+      responses:
+        '200':
+          description: Deleted.
+        '404':
+          $ref: '#components/responses/NotFound'
+  /events:
+    post:
+      summary: Adds a new event.
+      tags:
+        - events
+      parameters:
+        - name: Event
+          in: body
+          required: true
+          description: The new event.
+          schema:
+            $ref: "#/definitions/Event"
+      responses:
+        '201':
+          description: Event created.
+        '400':
+          $ref: '#components/responses/BadRequest'
+        '409':
+          $ref: '#components/responses/Conflict'
+    get:
+      summary: Returns a list of events.
+      tags:
+        - events
+      parameters:
+        - in: query
+          name: id
+          schema:
+            type: integer
+            example: 1
+          description: The event id.
+        - in: query
+          name: date
+          schema:
+            type: date
+            example: '2019-02-22'
+            description: The event date.
+        - in: query
+          name: description
+          schema:
+            type: string
+            example: "Rencontre avec l'auteure vietnamienne Thuy Linh Ti Ngo."
+          description: The event description.
+        - in: query
+          name: title
+          schema:
+            type: string
+            example: "À la découverte du Vietnam"
+          description: The event title.
+      responses:
+        '200':
+          description: The list of events.
+        '404':
+          description: No events found.
+  /awards/{awardRef}:
+    parameters:
+      - in: path
+        name: awardRef
+        schema:
+          type: integer
+          example: 1
+        description: The id of the award to return.
+        required: true
+    get:
+      summary: Returns a award.
+      tags:
+        - awards
+      responses:
+        '200':
+          description: The award.
+        '404':
+          $ref: '#components/responses/NotFound'
+    put:
+      summary: Replaces a award.
+      tags:
+        - awards
+      parameters:
+        - in: body
+          name: Genre
+          required: true
+          description: The new award.
+          schema:
+            $ref: "#/definitions/Genre"
+      responses:
+        '200':
+          description: The new award.
+        '400':
+          $ref: '#components/responses/BadRequest'
+        '404':
+          $ref: '#components/responses/NotFound'
+    patch:
+      summary: Updates a award.
+      tags:
+        - awards
+      parameters:
+        - in: body
+          name: Genre
+          required: true
+          description: The new award data.
+          schema:
+            $ref: "#/definitions/Genre"
+      responses:
+        '200':
+          description: The award updated.
+        '404':
+          $ref: '#components/responses/NotFound'
+    delete:
+      summary: Deletes a award.
+      tags:
+        - awards
+      responses:
+        '200':
+          description: Deleted.
+        '404':
+          $ref: '#components/responses/NotFound'
+  /awards:
+    post:
+      summary: Adds a new award.
+      tags:
+        - awards
+      parameters:
+        - name: Award
+          in: body
+          required: true
+          description: The new award.
+          schema:
+            $ref: "#/definitions/Award"
+      responses:
+        '201':
+          description: Award created.
+        '400':
+          $ref: '#components/responses/BadRequest'
+        '409':
+          $ref: '#components/responses/Conflict'
+    get:
+      summary: Returns a list of awards.
+      tags:
+        - awards
+      parameters:
+        - in: query
+          name: id
+          schema:
+            type: integer
+            example: 1
+          description: The award id.
+        - in: query
+          name: name
+          schema:
+            type: string
+            example: "Prix Goncourt"
+          description: The award name.
+      responses:
+        '200':
+          description: The list of awards.
+        '404':
+          description: No awards found.
+  /authors/{authorRef}:
+    parameters:
+      - in: path
+        name: authorRef
+        schema:
+          type: integer
+          example: 1
+        description: The id of the author to return.
+        required: true
+    get:
+      summary: Returns a author.
+      tags:
+        - authors
+      responses:
+        '200':
+          description: The author.
+        '404':
+          $ref: '#components/responses/NotFound'
+    put:
+      summary: Replaces a author.
+      tags:
+        - authors
+      parameters:
+        - in: body
+          name: Genre
+          required: true
+          description: The new author.
+          schema:
+            $ref: "#/definitions/Genre"
+      responses:
+        '200':
+          description: The new author.
+        '400':
+          $ref: '#components/responses/BadRequest'
+        '404':
+          $ref: '#components/responses/NotFound'
+    patch:
+      summary: Updates a author.
+      tags:
+        - authors
+      parameters:
+        - in: body
+          name: Genre
+          required: true
+          description: The new author data.
+          schema:
+            $ref: "#/definitions/Genre"
+      responses:
+        '200':
+          description: The author updated.
+        '404':
+          $ref: '#components/responses/NotFound'
+    delete:
+      summary: Deletes a author.
+      tags:
+        - authors
+      responses:
+        '200':
+          description: Deleted.
+        '404':
+          $ref: '#components/responses/NotFound'
+  /authors:
+    post:
+      summary: Adds a new author.
+      tags:
+        - authors
+      parameters:
+        - name: Author
+          in: body
+          required: true
+          description: The new author.
+          schema:
+            $ref: "#/definitions/Author"
+      responses:
+        '201':
+          description: Author created.
+        '400':
+          $ref: '#components/responses/BadRequest'
+        '409':
+          $ref: '#components/responses/Conflict'
+    get:
+      summary: Returns a list of authors.
+      tags:
+        - authors
+      parameters:
+        - in: query
+          name: id
+          schema:
+            type: integer
+            example: 1
+          description: Author ID
+        - in: query
+          name: lastName
+          schema:
+            type: string
+            example: "Verne"
+          description: Author last name.
+        - in: query
+          name: firstName
+          schema:
+            type: string
+            example: "Jules"
+          description : Author first name.
+        - in: query
+          name: biography
+          schema:
+            type: string
+            example: "Biographie : Jules Verne est un écrivain français, dont une grande partie de l'œuvre est consacrée à
+        des romans d'aventures et de science-fiction."
+          description: Author biography.
+        - in: query
+          name: awards
+          schema:
+            type: array
+            example: [{id: 1, name: "Prix Goncourt"}, {id: 2, name: "Prix Renaudot"}]
+          description: Author awards.
+      responses:
+        '200':
+          description: Authors data found
+        '404':
+          description: Authors not found
+  /genres/{genreRef}:
+    parameters:
+      - in: path
+        name: genreRef
+        schema:
+          type: integer
+          example: 1
+        description: The id of the genre to return.
+        required: true
+    get:
+      summary: Returns a genre.
+      tags:
+        - genres
+      responses:
+        '200':
+          description: The genre.
+        '404':
+          $ref: '#components/responses/NotFound'
+    put:
+      summary: Replaces a genre.
+      tags:
+        - genres
+      parameters:
+        - in: body
+          name: Genre
+          required: true
+          description: The new genre.
+          schema:
+            $ref: "#/definitions/Genre"
+      responses:
+        '200':
+          description: The new genre.
+        '400':
+          $ref: '#components/responses/BadRequest'
+        '404':
+          $ref: '#components/responses/NotFound'
+    patch:
+      summary: Updates a genre.
+      tags:
+        - genres
+      parameters:
+        - in: body
+          name: Genre
+          required: true
+          description: The new genre data.
+          schema:
+            $ref: "#/definitions/Genre"
+      responses:
+        '200':
+          description: The genre updated.
+        '404':
+          $ref: '#components/responses/NotFound'
+    delete:
+      summary: Deletes a genre.
+      tags:
+        - genres
+      responses:
+        '200':
+          description: Deleted.
+        '404':
+          $ref: '#components/responses/NotFound'
+  /genres:
+    post:
+      summary: Adds a new genre.
+      tags:
+        - genres
+      parameters:
+        - name: Genre
+          in: body
+          required: true
+          description: The new genre.
+          schema:
+            $ref: "#/definitions/Genre"
+      responses:
+        '201':
+          description: Genre created.
+        '400':
+          $ref: '#components/responses/BadRequest'
+        '409':
+          $ref: '#components/responses/Conflict'
+    get:
+      summary: Returns a list of genres.
+      tags:
+        - genres
+      parameters:
+        - in: query
+          name: id
+          schema:
+            type: integer
+            example: 1
+          description: The genre id.
+        - in: query
+          name: name
+          schema:
+            type: string
+            example: "Thriller"
+          description: The genre name.
+      responses:
+        '200':
+          description: The list of genres.
+        '404':
+          description: No genres found.
   /books/{bookRef}:
     parameters:
       - in: path
@@ -216,27 +757,27 @@ definitions:
       id:
         type: integer
         example: 1
-        description: The author id.
+        description: Author id.
       lastName:
         type: string
         example: "Verne"
-        description: The author last name.
+        description: Author last name.
       firstName:
         type: string
         example: "Jules"
-        description: The author first name.
+        description: Author first name.
       biography:
         type: string
         example: "Biographie : Jules Verne est un écrivain français, dont une grande partie de l'œuvre est consacrée à
         des romans d'aventures et de science-fiction."
-        description: The author biography.
+        description: Author biography.
         default: null
       awards:
         type: array
         items:
           type: object
         example: [{id: 1, name: "Prix Goncourt"}, {id: 2, name: "Prix Renaudot"}]
-        description: The author awards.
+        description: Author awards.
   Genre:
     type: object
     required:
@@ -340,5 +881,3 @@ definitions:
             example: 640
             description: The book weight in gramms.
             default: null
-
-
