@@ -33,11 +33,13 @@ sequelize.sync()
 // TODO: Add here all your mapped models of your database
 //const Flights = sequelize.import(path.join(__dirname, 'flights'));
 const Editors = sequelize.import(path.join(__dirname, 'editors'));
+const Events = sequelize.import(path.join(__dirname, 'events'));
 
 // TODO: And export them
 //exports.Flights = Flights;
 //exports.Users = Users;
 exports.Editors = Editors;
+exports.Events = Events;
 
 // Exporting sequelize object to allow raw queries if needed
 exports.sequelize = sequelize;
