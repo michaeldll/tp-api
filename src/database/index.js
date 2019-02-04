@@ -34,11 +34,15 @@ sequelize.sync()
 const Editors = sequelize.import(path.join(__dirname, 'editors'));
 const Events = sequelize.import(path.join(__dirname, 'events'));
 const Awards = sequelize.import(path.join(__dirname, 'awards'));
+const Authors = sequelize.import(path.join(__dirname, 'authors'));
+
+Authors.hasMany(Awards, {as: 'AuthorAwards'});
 
 // TODO: And export them
 exports.Editors = Editors;
 exports.Events = Events;
 exports.Awards = Awards;
+exports.Authors = Authors;
 
 // Exporting sequelize object to allow raw queries if needed
 exports.sequelize = sequelize;
