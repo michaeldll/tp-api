@@ -23,7 +23,7 @@ paths:
         description: The id of the editor to return.
         required: true
     get:
-      summary: Returns a editor.
+      summary: Returns an editor.
       tags:
         - editors
       responses:
@@ -32,7 +32,7 @@ paths:
         '404':
           $ref: '#components/responses/NotFound'
     put:
-      summary: Replaces a editor.
+      summary: Replaces an editor.
       tags:
         - editors
       parameters:
@@ -66,7 +66,7 @@ paths:
         '404':
           $ref: '#components/responses/NotFound'
     delete:
-      summary: Deletes a editor.
+      summary: Deletes an editor.
       tags:
         - editors
       responses:
@@ -134,7 +134,7 @@ paths:
         '404':
           $ref: '#components/responses/NotFound'
     put:
-      summary: Replaces a event.
+      summary: Replaces an event.
       tags:
         - events
       parameters:
@@ -152,7 +152,7 @@ paths:
         '404':
           $ref: '#components/responses/NotFound'
     patch:
-      summary: Updates a event.
+      summary: Updates an event.
       tags:
         - events
       parameters:
@@ -168,7 +168,7 @@ paths:
         '404':
           $ref: '#components/responses/NotFound'
     delete:
-      summary: Deletes a event.
+      summary: Deletes an event.
       tags:
         - events
       responses:
@@ -239,7 +239,7 @@ paths:
         description: The id of the award to return.
         required: true
     get:
-      summary: Returns a award.
+      summary: Returns an award.
       tags:
         - awards
       responses:
@@ -248,7 +248,7 @@ paths:
         '404':
           $ref: '#components/responses/NotFound'
     put:
-      summary: Replaces a award.
+      summary: Replaces an award.
       tags:
         - awards
       parameters:
@@ -266,7 +266,7 @@ paths:
         '404':
           $ref: '#components/responses/NotFound'
     patch:
-      summary: Updates a award.
+      summary: Updates an award.
       tags:
         - awards
       parameters:
@@ -341,7 +341,7 @@ paths:
         description: The id of the author to return.
         required: true
     get:
-      summary: Returns a author.
+      summary: Returns an author.
       tags:
         - authors
       responses:
@@ -350,7 +350,7 @@ paths:
         '404':
           $ref: '#components/responses/NotFound'
     put:
-      summary: Replaces a author.
+      summary: Replaces an author.
       tags:
         - authors
       parameters:
@@ -368,7 +368,7 @@ paths:
         '404':
           $ref: '#components/responses/NotFound'
     patch:
-      summary: Updates a author.
+      summary: Updates an author.
       tags:
         - authors
       parameters:
@@ -384,7 +384,7 @@ paths:
         '404':
           $ref: '#components/responses/NotFound'
     delete:
-      summary: Deletes a author.
+      summary: Deletes an author.
       tags:
         - authors
       responses:
