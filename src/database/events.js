@@ -1,7 +1,7 @@
 'use strict';
 
 const Events = (sequelize, DataTypes) => {
-    return sequelize.define('Users', {
+    return sequelize.define('Events', {
         id: {
             type: DataTypes.BIGINT,
             autoIncrement: true,
