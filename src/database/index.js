@@ -36,10 +36,15 @@ const Events = sequelize.import(path.join(__dirname, 'events'));
 const Awards = sequelize.import(path.join(__dirname, 'awards'));
 const Authors = sequelize.import(path.join(__dirname, 'authors'));
 const Genres = sequelize.import(path.join(__dirname, 'genres'));
+const Books = sequelize.import(path.join(__dirname, 'books'));
 
 
 // Foreign keys
 Authors.hasMany(Awards, {as: 'AuthorAwards'});
+Books.hasMany(Genres, {as: 'BookGenres'});
+Books.belongsTo(Editors);
+Books.belongsTo(Authors);
+
 
 // TODO: And export them
 exports.Editors = Editors;
@@ -47,6 +52,7 @@ exports.Events = Events;
 exports.Awards = Awards;
 exports.Authors = Authors;
 exports.Genres = Genres;
+exports.Books = Books;
 
 // Exporting sequelize object to allow raw queries if needed
 exports.sequelize = sequelize;
