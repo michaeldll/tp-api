@@ -49,22 +49,6 @@ paths:
           $ref: '#components/responses/BadRequest'
         '404':
           $ref: '#components/responses/NotFound'
-    patch:
-      summary: Updates a editor.
-      tags:
-        - editors
-      parameters:
-        - in: body
-          name: Editor
-          required: true
-          description: The new editor data.
-          schema:
-            $ref: "#/definitions/Editor"
-      responses:
-        '200':
-          description: The editor updated.
-        '404':
-          $ref: '#components/responses/NotFound'
     delete:
       summary: Deletes an editor.
       tags:

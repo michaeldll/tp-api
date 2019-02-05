@@ -3,7 +3,7 @@
 const Books = (sequelize, DataTypes) => {
     return sequelize.define('Books', {
         id: {
-            type: DataTypes.BIGINT,
+            type: DataTypes.INTEGER,
             primaryKey: true,
             autoIncrement: true
         },

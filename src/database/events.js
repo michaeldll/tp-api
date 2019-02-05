@@ -3,7 +3,7 @@
 const Events = (sequelize, DataTypes) => {
     return sequelize.define('Events', {
         id: {
-            type: DataTypes.BIGINT,
+            type: DataTypes.INTEGER,
             autoIncrement: true,
             primaryKey: true,
         },

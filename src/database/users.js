@@ -3,7 +3,7 @@
 const Users = (sequelize, DataTypes) => {
     return sequelize.define('Users', {
         username: {
-            type: DataTypes.STRING,
+            type: DataTypes.INTEGER,
             primaryKey: true,
             validate: {notEmpty: {msg: '-> Missing username'}}
         },
