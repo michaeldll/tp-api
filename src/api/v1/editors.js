@@ -2,15 +2,13 @@ const express = require('express');
 const request = require('request-promise');
 const router = express.Router();
 
-/* GET editors listing. */
-
 router.post('/', async (req, res) => {
     try {
         const {body: giveEditor} = req;
         if (giveEditor.name) {
             const {Editors} = req.db;
             const editor = await Editors.create(giveEditor);
-            res.status(201).send(user);
+            res.status(201).send(editor);
         } else {
             res.status(400).send({message: 'Missing data'});
         }
@@ -20,34 +18,50 @@ router.post('/', async (req, res) => {
     }
 });
 
-router.get('/:username', async (req, res) => {
-    const username = req.params.username;
-    const {Users} = req.db;
-    const user = await Users.findOne({ where: {username: username} });
-    if (user) {
-        return res.status(200).send(user);
+router.get('/:editorId', async (req, res) => {
+    const editorId = req.params.editorId;
+    const {Editors} = req.db;
+    const editor = await Editors.findOne({ where: {id: editorId} });
+    if (editor) {
+        return res.status(200).send(editor);
     } else {
         return res.status(404)
-            .send({message: `Username ${username} not found`});
+            .send({message: `Editor ${editorId} not found`});
     }
 });
 
-router.put('/:username', async (req, res) => {
-    const username = req.params.username;
-    const {Users} = req.db;
-    const {body: givenUser} = req;
+router.get('/', async (req, res) => {
+    const {Editors} = req.db;
+    const {id, name} = req.query;
+    let editors = await Editors.findAll();
+    if (editors) {
+        if (id)
+            editors = editors.filter(editor => editor.id === id);
+        if (name)
+            editors = editors.filter(editor => editor.name === name);
+        return res.status(200).send(editors);
+    } else {
+        return res.status(404)
+            .send({message: `Editors not found`});
+    }
+});
+
+router.put('/:editorId', async (req, res) => {
+    const editorId = req.params.editorId;
+    const {Editors} = req.db;
+    const {body: givenEditor} = req;
     try {
-        if (givenUser.country) {
-            const r = await Users.update(
-                { country: givenUser.country },
-                { where: { username: username } }
+        if (givenEditor.name) {
+            const r = await Editors.update(
+                { name: givenEditor.name },
+                { where: { id: editorId } }
             );
             if (r[0]) {
-                const user = await Users.findOne( { where: { username: username } });
-                return res.status(200).send(user);
+                const editor = await Editors.findOne( { where: { id: editorId } });
+                return res.status(200).send(editor);
             } else {
                 return res.status(404).send({
-                    message: `Username ${username} not found`
+                    message: `Editor ${editorId} not found`
                 });
             }
         } else {
@@ -59,6 +73,17 @@ router.put('/:username', async (req, res) => {
             message: e
         });
     }
+});
+
+router.delete('/:editorId', async (req, res) => {
+   const editorId = req.params.editorId;
+   const {Editors} = req.db;
+   let editor = await Editors.findOne({where: {id: editorId}});
+   if (editor) {
+       await Editors.destroy({ where: { id: editorId } });
+       return res.status(200).send('Editor deleted');
+   } else
+       return res.status(404).send({message: `Editor ${editorId} not found`});
 });
 
 module.exports = router;
