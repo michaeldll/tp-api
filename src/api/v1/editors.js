@@ -1,13 +1,12 @@
 const express = require('express');
-const request = require('request-promise');
 const router = express.Router();
 
 router.post('/', async (req, res) => {
     try {
-        const {body: giveEditor} = req;
-        if (giveEditor.name) {
+        const {body: givenEditor} = req;
+        if (givenEditor.name) {
             const {Editors} = req.db;
-            const editor = await Editors.create(giveEditor);
+            const editor = await Editors.create(givenEditor);
             res.status(201).send(editor);
         } else {
             res.status(400).send({message: 'Missing data'});

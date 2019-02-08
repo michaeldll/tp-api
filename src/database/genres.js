@@ -9,10 +9,9 @@ const Genres = (sequelize, DataTypes) => {
         },
         name: {
             type: DataTypes.STRING,
-            validate: {notEmpty: {msg: '-> Missing name'}},
-            allowNull: false
+            unique: true,
+            validate: {notEmpty: {msg: '-> Missing name'}}
         }
-
     });
 };
 

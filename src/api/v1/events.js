@@ -1,5 +1,4 @@
 const express = require('express');
-const request = require('request-promise');
 const router = express.Router();
 
 router.post('/', async (req, res) => {

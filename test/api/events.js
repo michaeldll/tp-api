@@ -78,7 +78,7 @@ describe.only('Events api', function() {
             expect(events).to.be.an('array');
         });
 
-        it("Requests all events with no matching specs, receives 404", async () => {
+        it("Requests all events with not matching specs, receives 404", async () => {
             const {body: events} = await server.get('/api/v1/events?id=10&description=hello')
                 .expect(200);
                 expect(events.length).to.equal(0);
