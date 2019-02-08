@@ -40,8 +40,8 @@ const Books = sequelize.import(path.join(__dirname, 'books'));
 
 
 // Foreign keys
-Authors.hasMany(Awards, {as: 'AuthorAwards'});
-Books.hasMany(Genres, {as: 'BookGenres'});
+Awards.hasMany(Authors, {as: 'AuthorAwards'});
+Genres.hasMany(Books, {as: 'BookGenres'});
 Books.belongsTo(Editors);
 Books.belongsTo(Authors);
 

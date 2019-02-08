@@ -6,8 +6,9 @@ router.post('/', async (req, res) => {
         const {body: givenGenre} = req;
         if (givenGenre.name) {
             const {Genres} = req.db;
-            const genre = await Genres.create(givenGenre);
-            console.log(await Genres.findAll());
+            let genre = await Genres.findOne({where: {name: givenGenre.name}});
+            if (genre) res.status(409).send({message: 'This genre already exists'});
+            genre = await Genres.create(givenGenre);
             res.status(201).send(genre);
         } else {
             res.status(400).send({message: 'Missing data'});

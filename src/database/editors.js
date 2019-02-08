@@ -10,7 +10,8 @@ const Editors = (sequelize, DataTypes) => {
         name: {
             type: DataTypes.STRING,
             validate: {notEmpty: {msg: '-> Missing name'}},
-            unique: true
+            unique: true,
+            allowNull: false
         }
     });
 };

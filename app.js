@@ -13,7 +13,6 @@ const database = require('./src/database');
 const editorsRouter = require('./src/api/v1/editors');
 const eventsRouter = require('./src/api/v1/events');
 const genresRouter = require('./src/api/v1/genres');
-//const flightsRouter = require('./src/api/v1/flights');
 
 const createServer = () => {
 	const app = express();
@@ -40,7 +39,6 @@ const createServer = () => {
 	app.use('/api/v1/editors', editorsRouter);
 	app.use('/api/v1/events', eventsRouter);
 	app.use('/api/v1/genres', genresRouter);
-	//app.use('/api/v1/flights', flightsRouter);
 
 	const spec = fs.readFileSync(path.resolve(__dirname, 'swagger.yaml'), 'utf8');
 	const swaggerDoc = jsyaml.safeLoad(spec);
