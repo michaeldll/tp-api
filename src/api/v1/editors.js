@@ -33,12 +33,13 @@ router.get('/:editorId', async (req, res) => {
 router.get('/', async (req, res) => {
     const {Editors} = req.db;
     const {id, name} = req.query;
-    let editors = await Editors.findAll();
+    const filters = {
+        where: {}
+    };
+    if (id) filters.where.id = id;
+    if (name) filters.where.name = name;
+    const editors = await Editors.findAll(filters);
     if (editors) {
-        if (id)
-            editors = editors.filter(editor => editor.id === id);
-        if (name)
-            editors = editors.filter(editor => editor.name === name);
         return res.status(200).send(editors);
     } else {
         return res.status(404)
@@ -81,7 +82,7 @@ router.delete('/:editorId', async (req, res) => {
    let editor = await Editors.findOne({where: {id: editorId}});
    if (editor) {
        await Editors.destroy({ where: { id: editorId } });
-       return res.status(200).send('Editor deleted');
+       return res.status(200).send({message: 'Editor deleted'});
    } else
        return res.status(404).send({message: `Editor ${editorId} not found`});
 });
