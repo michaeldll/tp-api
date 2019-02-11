@@ -11,8 +11,9 @@ const database = require('./src/database');
 
 // TODO: require here your routes files
 const editorsRouter = require('./src/api/v1/editors');
-const eventsRouter = require('./src/api/v1/events');
-const genresRouter = require('./src/api/v1/genres');
+const eventsRouter  = require('./src/api/v1/events');
+const genresRouter  = require('./src/api/v1/genres');
+const awardsRouter  = require('./src/api/v1/awards');
 
 const createServer = () => {
 	const app = express();
@@ -39,6 +40,7 @@ const createServer = () => {
 	app.use('/api/v1/editors', editorsRouter);
 	app.use('/api/v1/events', eventsRouter);
 	app.use('/api/v1/genres', genresRouter);
+	app.use('/api/v1/awards', awardsRouter);
 
 	const spec = fs.readFileSync(path.resolve(__dirname, 'swagger.yaml'), 'utf8');
 	const swaggerDoc = jsyaml.safeLoad(spec);

@@ -20,8 +20,7 @@ const Authors = (sequelize, DataTypes) => {
         biography: {
             type: DataTypes.STRING,
             allowNull: true
-        },
-
+        }
     });
 };
 
