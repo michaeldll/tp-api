@@ -12,19 +12,19 @@ describe.only('Awards api', function() {
     beforeEach(async function() {
         await database.sequelize.query('DELETE from AWARDS');
         const {Awards} = database;
-        const promises = fixtures.map(genre => Awards.create(genre));
+        const promises = fixtures.map(award => Awards.create(award));
         await Promise.all(promises);
     });
 
     describe('POST awards api', function() {
         it("Sends all required data, receives 201 and the event created", async () => {
-            const {body: genre} = await server.post('/api/v1/awards')
+            const {body: award} = await server.post('/api/v1/awards')
                 .send({
                     name: 'Prix Pulitzer'
                 })
                 .expect(201);
-            expect(genre.name).to.equal('Prix Pulitzer');
-            expect(genre).to.be.an('object');
+            expect(award.name).to.equal('Prix Pulitzer');
+            expect(award).to.be.an('object');
         });
 
         it("Sends no informations, receives 400", async () => {
@@ -34,7 +34,7 @@ describe.only('Awards api', function() {
         });
 
         // TODO: Fix this unique constraint fail ????
-        it("Sends existing genre, receives 409", async () => {
+        it("Sends existing award, receives 409", async () => {
             await server.post('/api/v1/awards')
                 .send({
                     name: 'Prix Goncourt'
@@ -44,18 +44,18 @@ describe.only('Awards api', function() {
     });
 
     describe('GET /api/v1/awards/:awardId', function() {
-        it("Requests a non-existing genre, receives 404", async () => {
+        it("Requests a non-existing award, receives 404", async () => {
             const {body: err} = await server.get('/api/v1/awards/1000')
                 .expect(404);
             expect(err.message).to.equal('Award 1000 not found');
         });
 
-        it("Requests an existing genre, receives 200 and the genre", async () => {
-            const {body: genre} = await server.get('/api/v1/awards/1')
+        it("Requests an existing award, receives 200 and the award", async () => {
+            const {body: award} = await server.get('/api/v1/awards/1')
                 .expect(200);
-            expect(genre.id).to.equal(1);
-            expect(genre.name).to.equal('Prix Goncourt');
-            expect(genre).to.be.an('object');
+            expect(award.id).to.equal(1);
+            expect(award.name).to.equal('Prix Goncourt');
+            expect(award).to.be.an('object');
         });
     });
 
@@ -78,7 +78,7 @@ describe.only('Awards api', function() {
     });
 
     describe('PUT /api/v1/awards/:awardId', function() {
-        it("Replaces a non-existing genre, receives 404", async () => {
+        it("Replaces a non-existing award, receives 404", async () => {
             const {body: err} = await server.put('/api/v1/awards/10')
                 .send({
                     name: 'Prix Pulitzer'
@@ -87,18 +87,18 @@ describe.only('Awards api', function() {
             expect(err.message).to.equal('Award 10 not found');
         });
 
-        it("Updates an existing genre, receives 200 and the new genre", async () => {
-            const {body: genre} = await server.put('/api/v1/awards/1')
+        it("Updates an existing award, receives 200 and the new award", async () => {
+            const {body: award} = await server.put('/api/v1/awards/1')
                 .send({
-                    name: 'Prix Pulitzer'
+                    name: 'Prix Goncourt'
                 })
                 .expect(200);
-            expect(genre.name).to.equal('Prix Pulitzer');
-            expect(genre.id).to.equal(1);
-            expect(genre).to.be.an('object');
+            expect(award.name).to.equal('Prix Goncourt');
+            expect(award.id).to.equal(1);
+            expect(award).to.be.an('object');
         });
 
-        it("Updates an existing genre with no data sent, receives 400", async () => {
+        it("Updates an existing award with no data sent, receives 400", async () => {
             await server.put('/api/v1/awards/1')
                 .send({})
                 .expect(400);
@@ -106,7 +106,7 @@ describe.only('Awards api', function() {
     });
 
     describe('DELETE /api/v1/awards/:awardId', function () {
-        it('Deletes an existing genre, receives 200', async () => {
+        it('Deletes an existing award, receives 200', async () => {
             const {body: msg} = await server.delete('/api/v1/awards/1')
                 .expect(200);
             expect(msg.message).to.equal('Award deleted');
@@ -114,7 +114,7 @@ describe.only('Awards api', function() {
                 .expect(404);
         });
 
-        it('Deletes a non-existing genre, receives 404', async () => {
+        it('Deletes a non-existing award, receives 404', async () => {
             const {body: err} = await server.delete('/api/v1/awards/1000')
                 .expect(404);
             expect(err.message).to.equal('Award 1000 not found');
