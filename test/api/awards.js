@@ -61,12 +61,12 @@ describe.only('Awards api', function() {
 
     describe('GET /api/v1/awards/', function() {
         it("Requests all awards, receives 200 and awards list", async () => {
-            const {body: editors} = await server.get('/api/v1/awards')
+            const {body: awards} = await server.get('/api/v1/awards')
                 .expect(200);
-            expect(editors.length).to.equal(1);
-            expect(editors[0].id).to.equal(1);
-            expect(editors[0].name).to.equal('Prix Goncourt');
-            expect(editors).to.be.an('array');
+            expect(awards.length).to.equal(1);
+            expect(awards[0].id).to.equal(1);
+            expect(awards[0].name).to.equal('Prix Goncourt');
+            expect(awards).to.be.an('array');
         });
 
         it("Requests all awards with not matching specs, receive 404 and empty awards list", async () => {
