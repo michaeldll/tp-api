@@ -15,6 +15,7 @@ const eventsRouter  = require('./src/api/v1/events');
 const genresRouter  = require('./src/api/v1/genres');
 const awardsRouter  = require('./src/api/v1/awards');
 const authorsRouter  = require('./src/api/v1/authors');
+const booksRouter  = require('./src/api/v1/books');
 
 const createServer = () => {
 	const app = express();
@@ -43,6 +44,7 @@ const createServer = () => {
 	app.use('/api/v1/genres', genresRouter);
 	app.use('/api/v1/awards', awardsRouter);
 	app.use('/api/v1/authors', authorsRouter);
+	app.use('/api/v1/books', booksRouter);
 
 	const spec = fs.readFileSync(path.resolve(__dirname, 'swagger.yaml'), 'utf8');
 	const swaggerDoc = jsyaml.safeLoad(spec);

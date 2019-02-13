@@ -4,11 +4,9 @@ const router = express.Router();
 router.post('/', async (req, res) => {
     try {
         const {body: givenAuthor} = req;
-        console.log(givenAuthor);
         if (givenAuthor.lastName) {
             const {Authors} = req.db;
             let author = await Authors.findOne({where: {lastName: givenAuthor.lastName}});
-            console.log(author);
             if (author) res.status(409).send({message: 'This author already exists'});
             author = await Authors.create(givenAuthor);
             res.status(201).send(author);

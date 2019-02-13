@@ -1,0 +1,18 @@
+[
+    {
+        "id": 1,
+        "bookRef": 9782330053901,
+        "publicationYear": "2019-01-01",
+        "price": 8,
+        "summary": "Phileas Fogg, parfait gentleman anglais, membre du Reform club est un homme froid, ponctuel etméticuleux, mais aussi généreux et courageux.",
+        "editorWord": "Sûrement l'une de ses meilleures oeuvres.",
+        "bookSellerWord": "L'un de nos coups de coeur 2019 !",
+        "details": {
+            "pagesNumber": 380,
+            "length": 240,
+            "width": 145,
+            "thickness": 15,
+            "weight": 640
+        }
+    }
+]
