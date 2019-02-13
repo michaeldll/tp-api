@@ -66,10 +66,13 @@ describe.only('Authors api', function() {
         it("Requests all authors, receives 200 and authors list", async () => {
             const {body: authors} = await server.get('/api/v1/authors')
                 .expect(200);
-            expect(authors.length).to.equal(1);
+            expect(authors.length).to.equal(2);
             expect(authors[0].id).to.equal(1);
             expect(authors[0].lastName).to.equal('Verne');
-            expect(authors[0].firstName).to.equal('Jules');            
+            expect(authors[0].firstName).to.equal('Jules');
+            expect(authors[1].id).to.equal(2);
+            expect(authors[1].lastName).to.equal('Verneo');
+            expect(authors[1].firstName).to.equal('Juleso');
             expect(authors).to.be.an('array');
         });
 

@@ -28,6 +28,9 @@ sequelize.sync()
 	.then(() => {
 		console.log('DB loaded');
 	})
+	// .then(function(){
+	// 	return sequelize.drop(); // drop all tables in the db
+	// })
 ;
 
 // TODO: Add here all your mapped models of your database
@@ -37,11 +40,12 @@ const Awards = sequelize.import(path.join(__dirname, 'awards'));
 const Authors = sequelize.import(path.join(__dirname, 'authors'));
 const Genres = sequelize.import(path.join(__dirname, 'genres'));
 const Books = sequelize.import(path.join(__dirname, 'books'));
+const AuthorsAwards = sequelize.import(path.join(__dirname, 'authors_awards'));
 
 
 // Foreign keys
-Awards.hasMany(Authors, {as: 'AuthorAwards'});
-Genres.hasMany(Books, {as: 'BookGenres'});
+Awards.belongsToMany(Authors, {through: AuthorsAwards});
+Authors.belongsToMany(Awards, {through: AuthorsAwards});
 Books.belongsTo(Editors);
 Books.belongsTo(Authors);
 
@@ -53,6 +57,7 @@ exports.Awards = Awards;
 exports.Authors = Authors;
 exports.Genres = Genres;
 exports.Books = Books;
+exports.AuthorsAwards = AuthorsAwards;
 
 // Exporting sequelize object to allow raw queries if needed
 exports.sequelize = sequelize;
