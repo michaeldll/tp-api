@@ -33,12 +33,13 @@ router.get('/:authorAwardId', async (req, res) => {
 
 router.get('/', async (req, res) => {
     const {AuthorsAwards} = req.db;
-    const {id, lastName} = req.query;
+    const {id, AuthorId, AwardId} = req.query;
     const filters = {
         where: {}
     };
-    if (id) filters.where.id = id;
-    if (lastName) filters.where.lastName = lastName;
+    if (id) filters.where.id = parseInt(id);
+    if (AuthorId) filters.where.AuthorId = parseInt(AuthorId);
+    if (AwardId) filters.where.AwardId = parseInt(AwardId);
     const authorsAwards = await AuthorsAwards.findAll(filters);
     if (authorsAwards) {
         return res.status(200).send(authorsAwards);
@@ -48,44 +49,43 @@ router.get('/', async (req, res) => {
     }
 });
 
-router.put('/:authorId', async (req, res) => {
-    const authorId = req.params.authorId;
-    const {Authors} = req.db;
-    const {body: givenAuthor} = req;
+router.put('/:authorAwardId', async (req, res) => {
+    const authorAwardId = req.params.authorAwardId;
+    const {AuthorsAwards} = req.db;
+    const {body: givenAuthorAward} = req;
     try {
-        if (givenAuthor.lastName) {
-            const r = await Authors.update(
-                { lastName: givenAuthor.lastName },
-                { where: { id: authorId } }
+        if (givenAuthorAward.AuthorId && givenAuthorAward.AwardId) {
+            const r = await AuthorsAwards.update(
+                { AuthorId: givenAuthorAward.AuthorId, AwardId: givenAuthorAward.AwardId },
+                { where: { id: authorAwardId } }
             );
             if (r[0]) {
-                const author = await Authors.findOne( { where: { id: authorId } });
+                const author = await AuthorsAwards.findOne( { where: { id: authorAwardId } });
                 return res.status(200).send(author);
             } else {
                 return res.status(404).send({
-                    message: `Author ${authorId} not found`
+                    message: `AuthorAward ${authorAwardId} not found`
                 });
             }
         } else {
             res.status(400).send({message: 'Missing data'});
         }
     } catch (e) {
-        console.log(e);
         return res.status(400).send({
             message: e
         });
     }
 });
 
-router.delete('/:authorId', async (req, res) => {
-    const authorId = req.params.authorId;
-    const {Authors} = req.db;
-    let author = await Authors.findOne({where: {id: authorId}});
-    if (author) {
-        await Authors.destroy({ where: { id: authorId } });
-        return res.status(200).send({message: 'Author deleted'});
+router.delete('/:authorAwardId', async (req, res) => {
+    const authorAwardId = req.params.authorAwardId;
+    const {AuthorsAwards} = req.db;
+    let authorAward = await AuthorsAwards.findOne({where: {id: authorAwardId}});
+    if (authorAward) {
+        await AuthorsAwards.destroy({ where: { id: authorAwardId } });
+        return res.status(200).send({message: 'AuthorAward deleted'});
     } else
-        return res.status(404).send({message: `Author ${authorId} not found`});
+        return res.status(404).send({message: `AuthorAward ${authorAwardId} not found`});
 });
 
 module.exports = router;

@@ -63,11 +63,13 @@ describe.only('Awards api', function() {
         it("Requests all awards, receives 200 and awards list", async () => {
             const {body: awards} = await server.get('/api/v1/awards')
                 .expect(200);
-            expect(awards.length).to.equal(2);
+            expect(awards.length).to.equal(3);
             expect(awards[0].id).to.equal(1);
             expect(awards[0].name).to.equal('Prix Goncourt');
             expect(awards[1].id).to.equal(2);
             expect(awards[1].name).to.equal('youuu');
+            expect(awards[2].id).to.equal(3);
+            expect(awards[2].name).to.equal('ihoh');
             expect(awards).to.be.an('array');
         });
 

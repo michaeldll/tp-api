@@ -20,14 +20,18 @@ router.post('/', async (req, res) => {
 });
 
 router.get('/:genreId', async (req, res) => {
-    const genreId = req.params.genreId;
-    const {Genres} = req.db;
-    const genre = await Genres.findOne({ where: {id: genreId} });
-    if (genre) {
-        return res.status(200).send(genre);
-    } else {
-        return res.status(404)
+    try {
+        const genreId = req.params.genreId;
+        const {Genres} = req.db;
+        const genre = await Genres.findOne({where: {id: genreId}});
+        if (genre) {
+            return res.status(200).send(genre);
+        } else {
+            return res.status(404)
             .send({message: `Genre ${genreId} not found`});
+        }
+    } catch (e) {
+        res.status(500).send({message: e.message});
     }
 });
 

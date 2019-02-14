@@ -131,16 +131,11 @@ describe.only('AuthorsAwards api', function() {
 
     describe('GET /api/v1/authorsAwards/', function() {
         it("Requests all authorsAwards, receives 200 and authorsAwards list", async () => {
-            await server.post('/api/v1/authorsAwards')
-                .send({
-                    AwardId: 1,
-                    AuthorId: 1
-                });
             const {body: authorsAwards} = await server.get('/api/v1/authorsAwards')
                 .expect(200);
             expect(authorsAwards.length).to.equal(1);
             expect(authorsAwards[0].AuthorId).to.equal(1);
-            expect(authorsAwards[0].AwardId).to.equal(1);
+            expect(authorsAwards[0].AwardId).to.equal(3);
             expect(authorsAwards).to.be.an('array');
         });
 
@@ -150,52 +145,65 @@ describe.only('AuthorsAwards api', function() {
             expect(authorsAwards.length).to.equal(0);
             expect(authorsAwards).to.be.an('array');
         });
+
+        it("Requests all authorsAwards with matching specs, receive 200 and authorsAwards list", async () => {
+            await server.post('/api/v1/authorsAwards')
+            .send({
+                AwardId: 1,
+                AuthorId: 1
+            });
+            const {body: authorsAwards} = await server.get('/api/v1/authorsAwards?AwardId=1')
+            .expect(200);
+            expect(authorsAwards.length).to.equal(1);
+            expect(authorsAwards[0].AwardId).to.equal(1);
+            expect(authorsAwards).to.be.an('array');
+        });
     });
-    //
-    // describe('PUT /api/v1/authors/:authorId', function() {
-    //     it("Replaces a non-existing author, receives 404", async () => {
-    //         const {body: err} = await server.put('/api/v1/authors/10')
-    //             .send({
-    //                 lastName: 'Dostoevsky',
-    //                 firstName: 'Fyodor'
-    //             })
-    //             .expect(404);
-    //         expect(err.message).to.equal('Author 10 not found');
-    //     });
-    //
-    //     it("Updates an existing author, receives 200 and the new author", async () => {
-    //         const {body: author} = await server.put('/api/v1/authors/1')
-    //             .send({
-    //                 lastName: 'Verne',
-    //                 firstName: 'Jules'
-    //             })
-    //             .expect(200);
-    //         expect(author.lastName).to.equal('Verne');
-    //         expect(author.firstName).to.equal('Jules');
-    //         expect(author.id).to.equal(1);
-    //         expect(author).to.be.an('object');
-    //     });
-    //
-    //     it("Updates an existing author with no data sent, receives 400", async () => {
-    //         await server.put('/api/v1/authors/1')
-    //             .send({})
-    //             .expect(400);
-    //     })
-    // });
-    //
-    // describe('DELETE /api/v1/authors/:authorId', function () {
-    //     it('Deletes an existing author, receives 200', async () => {
-    //         const {body: msg} = await server.delete('/api/v1/authors/1')
-    //             .expect(200);
-    //         expect(msg.message).to.equal('Author deleted');
-    //         await server.get('/api/v1/authors/1')
-    //             .expect(404);
-    //     });
-    //
-    //     it('Deletes a non-existing author, receives 404', async () => {
-    //         const {body: err} = await server.delete('/api/v1/authors/1000')
-    //             .expect(404);
-    //         expect(err.message).to.equal('Author 1000 not found');
-    //     })
-    // })
+
+    describe('PUT /api/v1/authorsAwards/:authorAwardId', function() {
+        it("Replaces a non-existing authorAward, receives 404", async () => {
+            const {body: err} = await server.put('/api/v1/authorsAwards/10')
+                .send({
+                    AuthorId: 1,
+                    AwardId: 1
+                })
+                .expect(404);
+            expect(err.message).to.equal('AuthorAward 10 not found');
+        });
+
+        it("Updates an existing authorAward, receives 200 and the new authorAward", async () => {
+            const {body: authorAward} = await server.put('/api/v1/authorsAwards/1')
+                .send({
+                    AuthorId: 1,
+                    AwardId: 2
+                })
+                .expect(200);
+            expect(authorAward.id).to.equal(1);
+            expect(authorAward.AuthorId).to.equal(1);
+            expect(authorAward.AwardId).to.equal(2);
+            expect(authorAward).to.be.an('object');
+        });
+
+        it("Updates an existing authorAward with no data sent, receives 400", async () => {
+            await server.put('/api/v1/authorsAwards/3')
+                .send({})
+                .expect(400);
+        })
+    });
+
+    describe('DELETE /api/v1/authorsAwards/:authorAwardId', function () {
+        it('Deletes an existing authorAward, receives 200', async () => {
+            const {body: msg} = await server.delete('/api/v1/authorsAwards/1')
+                .expect(200);
+            expect(msg.message).to.equal('AuthorAward deleted');
+            await server.get('/api/v1/authorsAwards/1')
+                .expect(404);
+        });
+
+        it('Deletes a non-existing authorAward, receives 404', async () => {
+            const {body: err} = await server.delete('/api/v1/authorsAwards/1000')
+                .expect(404);
+            expect(err.message).to.equal('AuthorAward 1000 not found');
+        })
+    })
 });
