@@ -7,6 +7,11 @@ const Books = (sequelize, DataTypes) => {
             primaryKey: true,
             autoIncrement: true
         },
+        title: {
+            type: DataTypes.STRING,
+            validate: {notEmpty: {msg: '-> Missing book title'}},
+            allowNull: false
+        },
         bookRef: {
             type: DataTypes.INTEGER,
             validate: {notEmpty: {msg: '-> Missing book reference'}},
