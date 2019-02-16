@@ -23,7 +23,7 @@ describe.only('Books api', function() {
                     bookRef: 9782330053902,
                     publicationYear: "2019-02-02",
                     price: 30,
-                    title: "Book title 1"
+                    title: "Book 1"
                 })
                 .expect(201);
             expect(book.bookRef).to.equal(9782330053902);
