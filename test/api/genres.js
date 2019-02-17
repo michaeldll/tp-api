@@ -27,13 +27,36 @@ describe.only('Genres api', function() {
             expect(genre).to.be.an('object');
         });
 
+        it("Sends all required data with wrong property, receives 201 and the event created", async () => {
+            const {body: genre} = await server.post('/api/v1/genres')
+            .send({
+                name: 'Romantique',
+                test: 'test'
+            })
+            .expect(201);
+            expect(genre.name).to.equal('Romantique');
+            expect(genre.test).to.equal(undefined);
+            expect(genre).to.be.an('object');
+        });
+
+        it("Sends all required data + id, receives 201 and the event created", async () => {
+            const {body: genre} = await server.post('/api/v1/genres')
+            .send({
+                id: 15,
+                name: 'Romantique'
+            })
+            .expect(201);
+            expect(genre.name).to.equal('Romantique');
+            expect(genre.id).to.equal(15);
+            expect(genre).to.be.an('object');
+        });
+
         it("Sends no informations, receives 400", async () => {
             await server.post('/api/v1/genres')
                 .send({})
                 .expect(400);
         });
 
-        // TODO: Fix this unique constraint fail ????
         it("Sends existing genre, receives 409", async () => {
             await server.post('/api/v1/genres')
                 .send({
@@ -69,10 +92,18 @@ describe.only('Genres api', function() {
             expect(editors).to.be.an('array');
         });
 
-        it("Requests all genres with not matching specs, receive 404 and empty genres list", async () => {
+        it("Requests all genres with not matching specs, receive 200 and empty genres list", async () => {
             const {body: genres} = await server.get('/api/v1/genres?id=10&name=hello')
                 .expect(200);
             expect(genres.length).to.equal(0);
+            expect(genres).to.be.an('array');
+        });
+
+        it("Requests all genres with not matching specs, receive 200 and genres list", async () => {
+            const {body: genres} = await server.get('/api/v1/genres?name=Thriller')
+            .expect(200);
+            expect(genres.length).to.equal(1);
+            expect(genres[0].name).to.equal('Thriller');
             expect(genres).to.be.an('array');
         });
     });
@@ -95,6 +126,18 @@ describe.only('Genres api', function() {
                 .expect(200);
             expect(genre.name).to.equal('Romantique');
             expect(genre.id).to.equal(1);
+            expect(genre).to.be.an('object');
+        });
+
+        it("Updates an existing genre + id, receives 200 and the new genre", async () => {
+            const {body: genre} = await server.put('/api/v1/genres/1')
+            .send({
+                id: 15,
+                name: 'Romantique'
+            })
+            .expect(200);
+            expect(genre.name).to.equal('Romantique');
+            expect(genre.id).to.equal(15);
             expect(genre).to.be.an('object');
         });
 

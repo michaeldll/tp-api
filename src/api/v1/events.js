@@ -11,7 +11,7 @@ router.post('/', async (req, res) => {
             res.status(409).send({message: 'Event already exists'});
         else {
             event = await Events.create(givenEvent);
-            res.status(201).send(event);   
+            res.status(201).send(event);
         }
     } else {
         res.status(400).send({message: 'Missing data'});
@@ -47,28 +47,26 @@ router.get('/', async (req, res) => {
         filters.where.date = date;
     }
     if (title) filters.where.title = title;
-    events = await Events.findAll(filters);
+    const events = await Events.findAll(filters);
     if (events) return res.status(200).send(events);
     else return res.status(404).send({message: `Events not found`});
 });
 
 router.put('/:eventId', async (req, res) => {
-    const eventId = req.params.eventId;
+    let eventId = req.params.eventId;
     const {Events} = req.db;
     const {body: givenEvent} = req;
     const eventToReplace = await Events.findOne({where: {id: eventId}});
     if (eventToReplace) {
         try {
-            if (givenEvent.title && givenEvent.date && givenEvent.description) {
-                await Events.update(
-                    { title: givenEvent.title, date: givenEvent.date, description: givenEvent.description },
-                    { where: { id: eventId } }
-                );
-                const event = await Events.findOne( { where: { id: eventId } });
-                return res.status(200).send(event);
-            } else {
-                return res.status(400).send({message: 'Missing data'});
-            }
+            if (!givenEvent.date || !givenEvent.description || !givenEvent.title) return res.status(400).send({message: 'Missing event date'});
+            await Events.update(
+               givenEvent,
+                { where: { id: eventId } }
+            );
+            if (givenEvent.id) eventId = givenEvent.id;
+            const event = await Events.findOne( { where: { id: eventId } });
+            return res.status(200).send(event);
         } catch (e) {
             return res.status(400).send({
                 message: e.message

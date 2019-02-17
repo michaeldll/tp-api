@@ -6,9 +6,7 @@ router.post('/', async (req, res) => {
         const {body: givenGenre} = req;
         if (givenGenre.name) {
             const {Genres} = req.db;
-            let genre = await Genres.findOne({where: {name: givenGenre.name}});
-            if (genre) res.status(409).send({message: 'This genre already exists'});
-            genre = await Genres.create(givenGenre);
+            const genre = await Genres.create(givenGenre);
             res.status(201).send(genre);
         } else {
             res.status(400).send({message: 'Missing data'});
@@ -53,25 +51,23 @@ router.get('/', async (req, res) => {
 });
 
 router.put('/:genreId', async (req, res) => {
-    const genreId = req.params.genreId;
+    let genreId = req.params.genreId;
     const {Genres} = req.db;
     const {body: givenGenre} = req;
     try {
-        if (givenGenre.name) {
-            const r = await Genres.update(
-                { name: givenGenre.name },
-                { where: { id: genreId } }
-            );
-            if (r[0]) {
-                const genre = await Genres.findOne( { where: { id: genreId } });
-                return res.status(200).send(genre);
-            } else {
-                return res.status(404).send({
-                    message: `Genre ${genreId} not found`
-                });
-            }
+        if (!givenGenre.name) return res.status(400).send({message: 'Missing genre\'s name'});
+        const r = await Genres.update(
+            givenGenre,
+            { where: { id: genreId } }
+        );
+        if (r[0]) {
+            if (givenGenre.id) genreId = givenGenre.id;
+            const genre = await Genres.findOne( { where: { id: genreId } });
+            return res.status(200).send(genre);
         } else {
-            res.status(400).send({message: 'Missing data'});
+            return res.status(404).send({
+                message: `Genre ${genreId} not found`
+            });
         }
     } catch (e) {
         console.log(e);

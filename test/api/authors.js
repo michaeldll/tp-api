@@ -19,12 +19,40 @@ describe.only('Authors api', function() {
     describe('POST authors api', function() {
         it("Sends all required data, receives 201 and the event created", async () => {
             const {body: author} = await server.post('/api/v1/authors')
-                .send({
-                    lastName: 'Dostoevsky',
-                    firstName: 'Fyodor'
-                })
-                .expect(201);
+            .send({
+                lastName: 'Dostoevsky',
+                firstName: 'Fyodor'
+            })
+            .expect(201);
             expect(author.lastName).to.equal('Dostoevsky');
+            expect(author.firstName).to.equal('Fyodor');
+            expect(author).to.be.an('object');
+        });
+
+        it("Sends all required data and wrong property, receives 201 and the event created", async () => {
+            const {body: author} = await server.post('/api/v1/authors')
+            .send({
+                lastName: 'Dostoevsky',
+                firstName: 'Fyodor',
+                image: 'lol.png'
+            })
+            .expect(201);
+            expect(author.lastName).to.equal('Dostoevsky');
+            expect(author.firstName).to.equal('Fyodor');
+            expect(author.image).to.equal(undefined);
+            expect(author).to.be.an('object');
+        });
+
+        it("Sends all required data + id, receives 201 and the event created", async () => {
+            const {body: author} = await server.post('/api/v1/authors')
+            .send({
+                id: 150,
+                lastName: 'Dostoevsky',
+                firstName: 'Fyodor'
+            })
+            .expect(201);
+            expect(author.lastName).to.equal('Dostoevsky');
+            expect(author.id).to.equal(150);
             expect(author.firstName).to.equal('Fyodor');
             expect(author).to.be.an('object');
         });
@@ -190,6 +218,23 @@ describe.only('Authors api', function() {
             expect(author).to.be.an('object');
         });
 
+        it("Updates an existing author with full data and wrong property, receives 200 and the new author", async () => {
+            const {body: author} = await server.put('/api/v1/authors/1')
+            .send({
+                lastName: 'Vernezzzz',
+                firstName: 'Juleszzz',
+                biography: 'toto',
+                image: 'test.png'
+            })
+            .expect(200);
+            expect(author.lastName).to.equal('Vernezzzz');
+            expect(author.firstName).to.equal('Juleszzz');
+            expect(author.biography).to.equal('toto');
+            expect(author.image).to.equal(undefined);
+            expect(author.id).to.equal(1);
+            expect(author).to.be.an('object');
+        });
+
         it("Updates an existing author with no data sent, receives 400", async () => {
             await server.put('/api/v1/authors/1')
                 .send({})
@@ -277,11 +322,191 @@ describe.only('Authors api', function() {
     describe('PATCH /api/v1/authors/:authorId', function () {
         it('Patches firstName from an existing author, receives 200 and the author updated', async () => {
             const {body: author} = await server.patch('/api/v1/authors/1')
-                .send({
-                    firstName: 'Toto'
-                })
-                .expect(200);
+            .send({
+                firstName: 'Toto'
+            })
+            .expect(200);
             expect(author.firstName).to.equal('Toto');
+        });
+
+        it('Patches wrong property from an existing author, receives 200 and the author updated', async () => {
+            const {body: author} = await server.patch('/api/v1/authors/1')
+            .send({
+                image: 'Toto'
+            })
+            .expect(200);
+            expect(author.image).to.equal(undefined);
+        });
+
+        it('Patches lastName from an existing author, receives 200 and the author updated', async () => {
+            const {body: author} = await server.patch('/api/v1/authors/1')
+            .send({
+                lastName: 'Toto'
+            })
+            .expect(200);
+            expect(author.lastName).to.equal('Toto');
+        });
+
+        it('Patches biography from an existing author, receives 200 and the author updated', async () => {
+            const {body: author} = await server.patch('/api/v1/authors/1')
+            .send({
+                biography: 'Toto'
+            })
+            .expect(200);
+            expect(author.biography).to.equal('Toto');
+        });
+
+        it('Patches id from an existing author, receives 200 and the author updated', async () => {
+            const {body: author} = await server.patch('/api/v1/authors/1')
+            .send({
+                id: 5
+            })
+            .expect(200);
+            expect(author.id).to.equal(5);
+        });
+
+        it('Patches id and firstName from an existing author, receives 200 and the author updated', async () => {
+            const {body: author} = await server.patch('/api/v1/authors/1')
+            .send({
+                id: 5,
+                firstName: 'Ttiti'
+            })
+            .expect(200);
+            expect(author.id).to.equal(5);
+            expect(author.firstName).to.equal('Ttiti');
+        });
+
+        it('Patches id and lastName from an existing author, receives 200 and the author updated', async () => {
+            const {body: author} = await server.patch('/api/v1/authors/1')
+            .send({
+                id: 5,
+                lastName: 'Tata'
+            })
+            .expect(200);
+            expect(author.id).to.equal(5);
+            expect(author.lastName).to.equal('Tata');
+        });
+
+        it('Patches id and biography from an existing author, receives 200 and the author updated', async () => {
+            const {body: author} = await server.patch('/api/v1/authors/1')
+            .send({
+                id: 5,
+                biography: 'Tata'
+            })
+            .expect(200);
+            expect(author.id).to.equal(5);
+            expect(author.biography).to.equal('Tata');
+        });
+
+        it('Patches firstName and biography from an existing author, receives 200 and the author updated', async () => {
+            const {body: author} = await server.patch('/api/v1/authors/1')
+            .send({
+                firstName: 'Jean',
+                biography: 'Tata'
+            })
+            .expect(200);
+            expect(author.firstName).to.equal('Jean');
+            expect(author.biography).to.equal('Tata');
+        });
+
+        it('Patches firstName and lastName from an existing author, receives 200 and the author updated', async () => {
+            const {body: author} = await server.patch('/api/v1/authors/1')
+            .send({
+                firstName: 'Jean',
+                lastName: 'Tata'
+            })
+            .expect(200);
+            expect(author.firstName).to.equal('Jean');
+            expect(author.lastName).to.equal('Tata');
+        });
+
+        it('Patches lastName and biography from an existing author, receives 200 and the author updated', async () => {
+            const {body: author} = await server.patch('/api/v1/authors/1')
+            .send({
+                lastName: 'Jean',
+                biography: 'Tata'
+            })
+            .expect(200);
+            expect(author.lastName).to.equal('Jean');
+            expect(author.biography).to.equal('Tata');
+        });
+
+        it('Patches lastName and biography and firstName from an existing author, receives 200 and the author updated', async () => {
+            const {body: author} = await server.patch('/api/v1/authors/1')
+            .send({
+                lastName: 'Jean',
+                biography: 'Tata',
+                firstName: 'Ohoh'
+            })
+            .expect(200);
+            expect(author.lastName).to.equal('Jean');
+            expect(author.firstName).to.equal('Ohoh');
+            expect(author.biography).to.equal('Tata');
+        });
+
+        it('Patches lastName and biography and if from an existing author, receives 200 and the author updated', async () => {
+            const {body: author} = await server.patch('/api/v1/authors/1')
+            .send({
+                lastName: 'Jean',
+                biography: 'Tata',
+                id: 5
+            })
+            .expect(200);
+            expect(author.lastName).to.equal('Jean');
+            expect(author.id).to.equal(5);
+            expect(author.biography).to.equal('Tata');
+        });
+
+        it('Patches firstName and biography and id from an existing author, receives 200 and the author updated', async () => {
+            const {body: author} = await server.patch('/api/v1/authors/1')
+            .send({
+                firstName: 'Jean',
+                biography: 'Tata',
+                id: 5
+            })
+            .expect(200);
+            expect(author.firstName).to.equal('Jean');
+            expect(author.id).to.equal(5);
+            expect(author.biography).to.equal('Tata');
+        });
+
+        it('Patches firstName and lastName and id from an existing author, receives 200 and the author updated', async () => {
+            const {body: author} = await server.patch('/api/v1/authors/1')
+            .send({
+                firstName: 'Jean',
+                lastName: 'Tata',
+                id: 5
+            })
+            .expect(200);
+            expect(author.firstName).to.equal('Jean');
+            expect(author.id).to.equal(5);
+            expect(author.lastName).to.equal('Tata');
+        });
+
+        it('Patches all properties from an existing author, receives 200 and the author updated', async () => {
+            const {body: author} = await server.patch('/api/v1/authors/1')
+            .send({
+                firstName: 'Jean',
+                lastName: 'Tata',
+                biography: 'Tata',
+                id: 5
+            })
+            .expect(200);
+            expect(author.firstName).to.equal('Jean');
+            expect(author.id).to.equal(5);
+            expect(author.lastName).to.equal('Tata');
+            expect(author.biography).to.equal('Tata');
+        });
+
+        it('Patches all properties from a non-existing author, receives 404', async () => {
+            await server.patch('/api/v1/authors/5')
+            .send({
+                firstName: 'Jean',
+                lastName: 'Tata',
+                biography: 'Tata',
+                id: 5
+            })
+            .expect(404);
         });
     });
 

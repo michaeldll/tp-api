@@ -6,8 +6,6 @@ router.post('/', async (req, res) => {
         const {body: givenAward} = req;
         if (givenAward.name) {
             const {Awards} = req.db;
-            let award = await Awards.findOne({where: {name: givenAward.name}});
-            if (award) res.status(409).send({message: 'This award already exists'});
             award = await Awards.create(givenAward);
             res.status(201).send(award);
         } else {
@@ -49,16 +47,17 @@ router.get('/', async (req, res) => {
 });
 
 router.put('/:awardId', async (req, res) => {
-    const awardId = req.params.awardId;
+    let awardId = req.params.awardId;
     const {Awards} = req.db;
     const {body: givenAward} = req;
     try {
         if (givenAward.name) {
             const r = await Awards.update(
-                { name: givenAward.name },
+                givenAward,
                 { where: { id: awardId } }
             );
             if (r[0]) {
+                if (givenAward.id) awardId = givenAward.id;
                 const award = await Awards.findOne( { where: { id: awardId } });
                 return res.status(200).send(award);
             } else {

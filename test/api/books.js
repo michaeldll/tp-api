@@ -27,6 +27,27 @@ describe.only('Books api', function() {
                 })
                 .expect(201);
             expect(book.bookRef).to.equal(9782330053902);
+            expect(book.publicationYear).to.equal("2019-02-02T00:00:00.000Z");
+            expect(book.price).to.equal(30);
+            expect(book.title).to.equal('Book 1');
+            expect(book).to.be.an('object');
+        });
+
+        it("Sends all required data and wrong property, receives 201 and the event created", async () => {
+            const {body: book} = await server.post('/api/v1/books')
+            .send({
+                bookRef: 9782330053902,
+                publicationYear: "2019-02-02",
+                price: 30,
+                title: "Book 1",
+                test: 'test'
+            })
+            .expect(201);
+            expect(book.bookRef).to.equal(9782330053902);
+            expect(book.publicationYear).to.equal("2019-02-02T00:00:00.000Z");
+            expect(book.price).to.equal(30);
+            expect(book.title).to.equal('Book 1');
+            expect(book.test).to.equal(undefined);
             expect(book).to.be.an('object');
         });
 
@@ -34,6 +55,14 @@ describe.only('Books api', function() {
             await server.post('/api/v1/books')
                 .send({})
                 .expect(400);
+        });
+
+        it("Sends partial informations, receives 400", async () => {
+            await server.post('/api/v1/books')
+            .send({
+                title: 'toto'
+            })
+            .expect(400);
         });
 
         it("Sends existing book, receives 409", async () => {
@@ -73,10 +102,26 @@ describe.only('Books api', function() {
             expect(books).to.be.an('array');
         });
 
-        it("Requests all books with not matching specs, receive 404 and empty books list", async () => {
+        it("Requests all books with not matching specs, receive 200 and empty books list", async () => {
             const {body: books} = await server.get('/api/v1/books?id=10&bookRef=123')
                 .expect(200);
             expect(books.length).to.equal(0);
+            expect(books).to.be.an('array');
+        });
+
+        it("Requests all books with matching title specs, receive 200 and books list", async () => {
+            const {body: books} = await server.get('/api/v1/books?title=Le%20tour%20du%20monde%20en%2080%20jours')
+            .expect(200);
+            expect(books.length).to.equal(1);
+            expect(books[0].title).to.equal('Le tour du monde en 80 jours');
+            expect(books).to.be.an('array');
+        });
+
+        it("Requests all books with matching bookRef specs, receive 200 and books list", async () => {
+            const {body: books} = await server.get('/api/v1/books?bookRef=9782330053901')
+            .expect(200);
+            expect(books.length).to.equal(1);
+            expect(books[0].bookRef).to.equal(9782330053901);
             expect(books).to.be.an('array');
         });
     });
@@ -87,7 +132,7 @@ describe.only('Books api', function() {
                 .send({
                     bookRef: 9782330053902,
                     publicationYear: "2019-02-02",
-                    price: 30         
+                    price: 30
                 })
                 .expect(404);
             expect(err.message).to.equal('Book 10 not found');

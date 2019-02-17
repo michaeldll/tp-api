@@ -29,10 +29,46 @@ describe.only('AuthorsAwards api', function() {
             expect(authorsAwards).to.be.an('object');
         });
 
+        it("Sends all required data and wrong property, receives 201 and the authorsAward created", async () => {
+            const {body: authorsAwards} = await server.post('/api/v1/authorsAwards')
+            .send({
+                AwardId: 1,
+                AuthorId: 1,
+                test: 'test'
+            })
+            .expect(201);
+            expect(authorsAwards.AwardId).to.equal(1);
+            expect(authorsAwards.AuthorId).to.equal(1);
+            expect(authorsAwards.test).to.equal(undefined);
+            expect(authorsAwards).to.be.an('object');
+        });
+
+        it("Sends all required data + id, receives 201 and the authorsAward created", async () => {
+            const {body: authorsAwards} = await server.post('/api/v1/authorsAwards')
+            .send({
+                id: 150,
+                AwardId: 1,
+                AuthorId: 1
+            })
+            .expect(201);
+            expect(authorsAwards.AwardId).to.equal(1);
+            expect(authorsAwards.id).to.equal(150);
+            expect(authorsAwards.AuthorId).to.equal(1);
+            expect(authorsAwards).to.be.an('object');
+        });
+
         it("Sends no informations, receives 400", async () => {
             await server.post('/api/v1/authorsAwards')
                 .send({})
                 .expect(400);
+        });
+
+        it("Sends partial data, receives 400", async () => {
+            await server.post('/api/v1/authorsAwards')
+            .send({
+                AwardId: 1
+            })
+            .expect(400);
         });
 
         it("Sends existing AuthorId and AwardId, receives 409", async () => {
@@ -146,7 +182,7 @@ describe.only('AuthorsAwards api', function() {
             expect(authorsAwards).to.be.an('array');
         });
 
-        it("Requests all authorsAwards with matching specs, receive 200 and authorsAwards list", async () => {
+        it("Requests all authorsAwards with matching AwardId specs, receive 200 and authorsAwards list", async () => {
             await server.post('/api/v1/authorsAwards')
             .send({
                 AwardId: 1,
@@ -156,6 +192,77 @@ describe.only('AuthorsAwards api', function() {
             .expect(200);
             expect(authorsAwards.length).to.equal(1);
             expect(authorsAwards[0].AwardId).to.equal(1);
+            expect(authorsAwards).to.be.an('array');
+        });
+
+        it("Requests all authorsAwards with matching AuthorId specs, receive 200 and authorsAwards list", async () => {
+            await server.post('/api/v1/authorsAwards')
+            .send({
+                AwardId: 1,
+                AuthorId: 1
+            });
+            const {body: authorsAwards} = await server.get('/api/v1/authorsAwards?AuthorId=1')
+            .expect(200);
+            expect(authorsAwards.length).to.equal(2);
+            expect(authorsAwards[0].AwardId).to.equal(3);
+            expect(authorsAwards[1].AwardId).to.equal(1);
+            expect(authorsAwards).to.be.an('array');
+        });
+
+        it("Requests all authorsAwards with matching id specs, receive 200 and authorsAwards list", async () => {
+            await server.post('/api/v1/authorsAwards')
+            .send({
+                AwardId: 1,
+                AuthorId: 1
+            });
+            const {body: authorsAwards} = await server.get('/api/v1/authorsAwards?id=1')
+            .expect(200);
+            expect(authorsAwards.length).to.equal(1);
+            expect(authorsAwards[0].AwardId).to.equal(3);
+            expect(authorsAwards[0].AuthorId).to.equal(1);
+            expect(authorsAwards).to.be.an('array');
+        });
+
+        it("Requests all authorsAwards with matching AuthorId and AwardId specs, receive 200 and authorsAwards list", async () => {
+            await server.post('/api/v1/authorsAwards')
+            .send({
+                AwardId: 1,
+                AuthorId: 1
+            });
+            const {body: authorsAwards} = await server.get('/api/v1/authorsAwards?AuthorId=1&AwardId=3')
+            .expect(200);
+            expect(authorsAwards.length).to.equal(1);
+            expect(authorsAwards[0].AwardId).to.equal(3);
+            expect(authorsAwards[0].AuthorId).to.equal(1);
+            expect(authorsAwards).to.be.an('array');
+        });
+
+        it("Requests all authorsAwards with matching specs, receive 200 and authorsAwards list", async () => {
+            await server.post('/api/v1/authorsAwards')
+            .send({
+                AwardId: 1,
+                AuthorId: 1
+            });
+            const {body: authorsAwards} = await server.get('/api/v1/authorsAwards?AuthorId=1&AwardId=3&id=1')
+            .expect(200);
+            expect(authorsAwards.length).to.equal(1);
+            expect(authorsAwards[0].AwardId).to.equal(3);
+            expect(authorsAwards[0].AuthorId).to.equal(1);
+            expect(authorsAwards[0].id).to.equal(1);
+            expect(authorsAwards).to.be.an('array');
+        });
+
+        it("Requests all authorsAwards with matching specs and wrong filter, receive 200 and authorsAwards list", async () => {
+            await server.post('/api/v1/authorsAwards')
+            .send({
+                AwardId: 1,
+                AuthorId: 1
+            });
+            const {body: authorsAwards} = await server.get('/api/v1/authorsAwards?AuthorId=1&AwardId=3&loop=true')
+            .expect(200);
+            expect(authorsAwards.length).to.equal(1);
+            expect(authorsAwards[0].AwardId).to.equal(3);
+            expect(authorsAwards[0].AuthorId).to.equal(1);
             expect(authorsAwards).to.be.an('array');
         });
     });
@@ -184,11 +291,34 @@ describe.only('AuthorsAwards api', function() {
             expect(authorAward).to.be.an('object');
         });
 
+        it("Updates an existing authorAward with wrong property, receives 200 and the new authorAward", async () => {
+            const {body: authorAward} = await server.put('/api/v1/authorsAwards/1')
+            .send({
+                AuthorId: 1,
+                AwardId: 2,
+                test: 'test'
+            })
+            .expect(200);
+            expect(authorAward.id).to.equal(1);
+            expect(authorAward.AuthorId).to.equal(1);
+            expect(authorAward.AwardId).to.equal(2);
+            expect(authorAward.test).to.equal(undefined);
+            expect(authorAward).to.be.an('object');
+        });
+
         it("Updates an existing authorAward with no data sent, receives 400", async () => {
-            await server.put('/api/v1/authorsAwards/3')
+            await server.put('/api/v1/authorsAwards/1')
                 .send({})
                 .expect(400);
-        })
+        });
+
+        it("Updates an existing authorAward with partial data sent, receives 400", async () => {
+            await server.put('/api/v1/authorsAwards/1')
+            .send({
+                AwardId: 8
+            })
+            .expect(400);
+        });
     });
 
     describe('DELETE /api/v1/authorsAwards/:authorAwardId', function () {

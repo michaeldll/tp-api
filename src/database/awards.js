@@ -10,7 +10,8 @@ const Awards = (sequelize, DataTypes) => {
         name: {
             type: DataTypes.STRING,
             primaryKey: false,
-            validate: {notEmpty: {msg: '-> Missing name'}}
+            validate: {notEmpty: {msg: '-> Missing name'}},
+            unique: true
         }
     });
 };

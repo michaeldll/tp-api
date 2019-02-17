@@ -47,25 +47,23 @@ router.get('/', async (req, res) => {
 });
 
 router.put('/:editorId', async (req, res) => {
-    const editorId = req.params.editorId;
+    let editorId = req.params.editorId;
     const {Editors} = req.db;
     const {body: givenEditor} = req;
     try {
-        if (givenEditor.name) {
-            const r = await Editors.update(
-                { name: givenEditor.name },
-                { where: { id: editorId } }
-            );
-            if (r[0]) {
-                const editor = await Editors.findOne( { where: { id: editorId } });
-                return res.status(200).send(editor);
-            } else {
-                return res.status(404).send({
-                    message: `Editor ${editorId} not found`
-                });
-            }
+        if (!givenEditor.name) return res.status(400).send({message: 'Missing editor\'s name'});
+        const r = await Editors.update(
+            givenEditor,
+            { where: { id: editorId } }
+        );
+        if (r[0]) {
+            if (givenEditor.id) editorId = givenEditor.id;
+            const editor = await Editors.findOne( { where: { id: editorId } });
+            return res.status(200).send(editor);
         } else {
-            res.status(400).send({message: 'Missing data'});
+            return res.status(404).send({
+                message: `Editor ${editorId} not found`
+            });
         }
     } catch (e) {
         console.log(e);

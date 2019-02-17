@@ -84,15 +84,18 @@ router.put('/:authorId', async (req, res) => {
 });
 
 router.patch('/:authorId', async (req, res) => {
-   const authorId = req.params.authorId;
+   let authorId = req.params.authorId;
    const {Authors} = req.db;
    const {body: givenAuthor} = req;
    console.log(givenAuthor);
    const r = await Authors.update(
-       { givenAuthor },
+       givenAuthor,
        { where: { id: authorId } }
    );
-   if (r[0]) return res.status(200).send(await Authors.findOne({where: {id: authorId}}));
+   if (givenAuthor.id) authorId = givenAuthor.id;
+   if (r[0]) {
+       return res.status(200).send(await Authors.findOne({where: {id: authorId}}));
+   }
    else return res.status(404).send({message: `Author ${authorId} not found`});
 });
 
